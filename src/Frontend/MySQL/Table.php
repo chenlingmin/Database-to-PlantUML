@@ -19,6 +19,7 @@ class Table extends Frontend\Table
                     '          c.column_default AS defaultValue, ' .
                     '          CASE c.is_nullable WHEN "YES" THEN 1 ELSE 0 END AS isNullable, ' .
                     '          c.column_type AS type, ' .
+                    '          c.column_comment as "comment", ' .
                     '          k.constraint_name AS constraintName, ' .
                     '          k.referenced_table_name AS referencedTableName, ' .
                     '          k.referenced_column_name AS referencedColumnName ' .

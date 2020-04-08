@@ -14,6 +14,7 @@ abstract class Column implements Visitor\Element
     public $defaultValue         = null;
     public $isNullable           = '';
     public $type                 = '';
+    public $comment              = '';
     public $constraintName       = null;
     public $referencedTableName  = null;
     public $referencedColumnName = null;

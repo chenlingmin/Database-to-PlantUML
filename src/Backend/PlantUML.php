@@ -25,8 +25,11 @@ class PlantUML implements Visitor\Visit
         $out =
             '@startuml' . "\n\n" .
             '!define table(x) class x << (T,#ffebf3) >>' . "\n" .
+            '!define table(x, desc) class "desc" as x << (T,#ffebf3) x >>' . "\n" .
+            '\'hide stereotypes' . "\n" .
+            '\'可开启详细视图' . "\n" .
+            '\'hide field' . "\n".
             'hide methods' . "\n" .
-            'hide stereotypes' . "\n" .
             'skinparam classFontColor #3b0018' . "\n" .
             'skinparam classArrowColor #ff0066' . "\n" .
             'skinparam classBorderColor #ff0066' . "\n" .
@@ -45,19 +48,28 @@ class PlantUML implements Visitor\Visit
 
     public function visitTable(Frontend\Table $table, &$handle = null, &$eldnah = null): string
     {
-        $out         = 'table(' . $table->name . ') {' . "\n";
+
+        if( true === empty($table->comment) || $table->comment == "" ) {
+            $out         = 'table(' . $table->name . ') {' . "\n";
+        } else {
+            $out         = 'table(' . $table->name . ', ' . $table->comment . ') {' . "\n";
+        }
         $connections = '';
 
         $columns = [];
         $maximumNameLength = 0;
+        $maximumTypeLength = 0;
+
 
         foreach ($table->columns() as $column) {
             $columns[] = $column;
 
             $maximumNameLength = max($maximumNameLength, strlen($column->name));
+            $maximumTypeLength = max($maximumTypeLength, strlen($column->type));
         }
 
         $maximumTabulation = 1 + (int) floor($maximumNameLength / 4);
+        $maximumTypeLength = 1 + (int) floor($maximumTypeLength / 4);
 
         $listedColumns = [];
 
@@ -66,12 +78,15 @@ class PlantUML implements Visitor\Visit
 
             if (false === in_array($column->name, $listedColumns)) {
                 $out .= sprintf(
-                    '    {field} %s%s%s%s%s' . "\n",
+                    '    {field} %s%s%s%s%s%s%s' . "\n",
                     $isPrimary ? '+' : '',
                     $column->name,
                     str_repeat("\t", max(1, $maximumTabulation - (int) (floor(strlen($column->name) / 4)))),
                     $column->isNullable ? '?' : '',
-                    $column->type
+                    $column->type,
+                    str_repeat("\t", max(1, $maximumTypeLength - (int) (floor(strlen($column->type) / 4)))),
+                    $column->comment
+
                 );
 
                 $listedColumns[] = $column->name;
