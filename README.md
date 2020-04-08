@@ -18,6 +18,14 @@ following formats:
   * UTXT,
   * LaTeX.
 
+# QuickStart
+
+```
+docker run --rm -it chenlmdocker/docker-mysql-to-plantuml:latest -d "mysql:host=host" -u username -p passworld -s database
+
+
+``` 
+
 # Installation
 
 With [Composer](https://getcomposer.org/), simply run the following command:
