@@ -5,7 +5,7 @@ RUN docker-php-ext-install pdo_mysql
 
 WORKDIR /var/www/html
 USER www-data
-RUN wget https://codeload.github.com/chenlingmin/Database-to-PlantUML/zip/master -P /var/www/html \
+RUN wget https://codeload.github.com/chenlingmin/Database-to-PlantUML/zip/master -O /var/www/html/Database-to-PlantUML-master.zip \
   && unzip Database-to-PlantUML-master.zip -d /var/www/html \
   && rm -rf Database-to-PlantUML-master.zip .git resource
 
